@@ -99,6 +99,20 @@ class Clustering():
         np.savetxt(predict_path, self.od_predict, delimiter=',')
         np.savetxt(predict_proba_path, self.predict_proba, delimiter=',', fmt="%.8f", header=predict_proba_path)
 
+    def devidGroup(self, label_list):
+        group_list = []
+        group_num = 0
+        label_recent = label_list[0]
+
+        for i in range(len(label_list)):
+            if(label_recent==label_list[i]):
+                group_list.append(group_num)
+            else:
+                group_num += 1
+
+            label_recent = label_list[i]
+        return group_list
+
     def fit(self):
         if self.checkBagopen():
             self.openBagfile()
@@ -123,6 +137,8 @@ class Clustering():
 
             OD = outlier_detection(offset = 5,repeat=5)
             self.od_predict = OD.fit(self.predict)
+
+            self.od_group = self.devidGroup(self.od_predict)
 
             self.resultWrite()
 
