@@ -16,6 +16,7 @@
 #include "raspimouse_gamepad_teach_and_replay_clustering/Event.h"
 #include "ParticleFilter.h"
 #include "raspimouse_gamepad_teach_and_replay_clustering/PFoEOutput.h"
+#include "std_srvs/Empty.h"
 using namespace ros;
 
 Episodes ep;
@@ -92,10 +93,12 @@ int main(int argc, char **argv)
 	Publisher pfoe_out = n.advertise<raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput>("pfoe_out", 100);
 	ros::ServiceClient motor_on = n.serviceClient<std_srvs::Trigger>("motor_on");
 	ros::ServiceClient tm = n.serviceClient<raspimouse_ros_2::TimedMotion>("timed_motion");
+	ros::ServiceClient clustering_request = n.serviceClient<std_srvs::Empty>("clustering_request");
 
 	signal(SIGINT, on_shutdown);
 
 	motor_on.waitForExistence();
+	std_srvs::Empty empty;
 	std_srvs::Trigger t;
 	motor_on.call(t);
 
@@ -114,6 +117,13 @@ int main(int argc, char **argv)
 			string bagfile;
 			n.getParam("/current_bag_file", bagfile);
 			n.param("/bag_filelink", bagfile, bagfile);
+
+			ros::service::waitForService("clustering_request");
+			if (clustering_request.call(empty))
+				ROS_INFO("ClusteringRequest Success.");
+			else
+				ROS_INFO("ClusteringRequest Error.");
+
 			readEpisodes(bagfile);
 			bag_read = true;
 			pf.init();

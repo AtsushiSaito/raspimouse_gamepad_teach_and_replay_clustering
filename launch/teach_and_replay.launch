@@ -6,5 +6,6 @@
 	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="logicool_training" type="logicool_training.py" required="true" output="screen" />
 	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="logger" type="logger.py" required="true" output="screen" />
 	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="ledcontrol" type="ledcontrol.py" required="true" output="screen" />
+	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="clustering" type="clustering.py" required="true" output="screen" />
 	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="replay" type="replay" required="true" output="screen" />
 </launch>
