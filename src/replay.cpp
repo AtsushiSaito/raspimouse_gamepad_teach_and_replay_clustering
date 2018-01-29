@@ -7,15 +7,15 @@
 #include <signal.h>
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
-#include <ros/package.h> 
+#include <ros/package.h>
 #include "std_srvs/Trigger.h"
 #include "geometry_msgs/Twist.h"
 #include "raspimouse_ros_2/LightSensorValues.h"
 #include "raspimouse_ros_2/TimedMotion.h"
 #include "raspimouse_ros_2/ButtonValues.h"
-#include "raspimouse_gamepad_teach_and_replay/Event.h"
+#include "raspimouse_gamepad_teach_and_replay_clustering/Event.h"
 #include "ParticleFilter.h"
-#include "raspimouse_gamepad_teach_and_replay/PFoEOutput.h"
+#include "raspimouse_gamepad_teach_and_replay_clustering/PFoEOutput.h"
 using namespace ros;
 
 Episodes ep;
@@ -57,13 +57,13 @@ void readEpisodes(string file)
 
 	vector<std::string> topics;
 	topics.push_back("/event");
-	
+
 	rosbag::View view(bag1, rosbag::TopicQuery(topics));
 
 	double start = view.getBeginTime().toSec() + 5.0; //discard first 5 sec
 	double end = view.getEndTime().toSec() - 5.0; //discard last 5 sec
 	for(auto i : view){
-	        auto s = i.instantiate<raspimouse_gamepad_teach_and_replay::Event>();
+	        auto s = i.instantiate<raspimouse_gamepad_teach_and_replay_clustering::Event>();
 
 		Observation obs(s->left_forward,s->left_side,s->right_side,s->right_forward);
 		Action a = {s->linear_x,s->angular_z};
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 	Subscriber sub = n.subscribe("lightsensors", 1, sensorCallback);
 	Subscriber sub_b = n.subscribe("buttons", 1, buttonCallback);
 	Publisher cmdvel = n.advertise<geometry_msgs::Twist>("cmd_vel", 1);
-	Publisher pfoe_out = n.advertise<raspimouse_gamepad_teach_and_replay::PFoEOutput>("pfoe_out", 100);
+	Publisher pfoe_out = n.advertise<raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput>("pfoe_out", 100);
 	ros::ServiceClient motor_on = n.serviceClient<std_srvs::Trigger>("motor_on");
 	ros::ServiceClient tm = n.serviceClient<raspimouse_ros_2::TimedMotion>("timed_motion");
 
@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 			loop_rate.sleep();
 			continue;
 		}
-		raspimouse_gamepad_teach_and_replay::PFoEOutput out;
+		raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput out;
 
 		act = pf.sensorUpdate(&sensor_values, &act, &ep, &out);
 		msg.linear.x = act.linear_x;

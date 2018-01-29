@@ -4,7 +4,7 @@
 #include <vector>
 #include "Particle.h"
 #include "ProbDistribution.h"
-#include "raspimouse_gamepad_teach_and_replay/PFoEOutput.h"
+#include "raspimouse_gamepad_teach_and_replay_clustering/PFoEOutput.h"
 using namespace ros;
 
 class Episodes;
@@ -18,8 +18,8 @@ public:
 	void init(void);
 	void print(void);
 
-//	Action sensorUpdate(Observation *obs, Episodes *ep, raspimouse_gamepad_teach_and_replay::PFoEOutput *out);
-	Action sensorUpdate(Observation *obs, Action *act, Episodes *ep, raspimouse_gamepad_teach_and_replay::PFoEOutput *out);
+//	Action sensorUpdate(Observation *obs, Episodes *ep, raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput *out);
+	Action sensorUpdate(Observation *obs, Action *act, Episodes *ep, raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput *out);
 	Action mode(Episodes *ep);
 	Action modeParticle(Episodes *ep);
 	Action average(Episodes *ep);

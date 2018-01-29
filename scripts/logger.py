@@ -8,7 +8,7 @@ import math, sys, random, datetime
 from geometry_msgs.msg import Twist
 from std_srvs.srv import Trigger, TriggerResponse
 from raspimouse_ros_2.msg import LightSensorValues, ButtonValues
-from raspimouse_gamepad_teach_and_replay.msg import Event
+from raspimouse_gamepad_teach_and_replay_clustering.msg import Event
 
 class Logger():
     def __init__(self):

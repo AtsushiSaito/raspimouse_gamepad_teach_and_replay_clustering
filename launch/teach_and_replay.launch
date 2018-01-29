@@ -3,8 +3,8 @@
 	<node pkg="joy" name="joy_node" type="joy_node" required="true">
 		<param name="autorepeat_rate" value="3" />
 	</node>
-	<node pkg="raspimouse_gamepad_teach_and_replay" name="logicool_training" type="logicool_training.py" required="true" output="screen" />
-	<node pkg="raspimouse_gamepad_teach_and_replay" name="logger" type="logger.py" required="true" output="screen" />
-	<node pkg="raspimouse_gamepad_teach_and_replay" name="ledcontrol" type="ledcontrol.py" required="true" output="screen" />
-	<node pkg="raspimouse_gamepad_teach_and_replay" name="replay" type="replay" required="true" output="screen" />
+	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="logicool_training" type="logicool_training.py" required="true" output="screen" />
+	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="logger" type="logger.py" required="true" output="screen" />
+	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="ledcontrol" type="ledcontrol.py" required="true" output="screen" />
+	<node pkg="raspimouse_gamepad_teach_and_replay_clustering" name="replay" type="replay" required="true" output="screen" />
 </launch>

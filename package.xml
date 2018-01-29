@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package>
-  <name>raspimouse_gamepad_teach_and_replay</name>
+  <name>raspimouse_gamepad_teach_and_replay_clustering</name>
   <version>0.0.1</version>
-  <description>The raspimouse_gamepad_teach_and_replay package</description>
+  <description>The raspimouse_gamepad_teach_and_replay_clustering package</description>
 
-  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="ryuichiueda@gmail.com">Ryuichi Ueda</maintainer>
+  <maintainer email="atsushi31100854@gmail.com">AtsushiSaito</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/raspimouse_gamepad_teach_and_replay</url> -->
+  <!-- <url type="website">http://wiki.ros.org/raspimouse_gamepad_teach_and_replay_clustering</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->

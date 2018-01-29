@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(raspimouse_gamepad_teach_and_replay)
+project(raspimouse_gamepad_teach_and_replay_clustering)
 
 ## Add support for C++11, supported in ROS Kinetic and newer
 # add_definitions(-std=c++11)
@@ -108,7 +108,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES raspimouse_gamepad_teach_and_replay
+#  LIBRARIES raspimouse_gamepad_teach_and_replay_clustering
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -126,7 +126,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/raspimouse_gamepad_teach_and_replay.cpp
+#   src/${PROJECT_NAME}/raspimouse_gamepad_teach_and_replay_clustering.cpp
 # )
 add_library(Observation src/Observation.cpp)
 add_library(Event src/Event.cpp)
@@ -142,7 +142,7 @@ add_library(Particle src/Particle.cpp)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/raspimouse_gamepad_teach_and_replay_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/raspimouse_gamepad_teach_and_replay_clustering_node.cpp)
 add_executable(replay src/replay.cpp)
 
 ## Rename C++ executable without prefix
@@ -208,7 +208,7 @@ target_link_libraries(replay Particle ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_raspimouse_gamepad_teach_and_replay.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_raspimouse_gamepad_teach_and_replay_clustering.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
