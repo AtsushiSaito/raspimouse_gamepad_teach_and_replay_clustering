@@ -30,6 +30,9 @@ int sum_forward = 0;
 bool on = false;
 bool bag_read = false;
 
+vector<int> predict;
+vector<vector<double> > predict_proba;
+
 void buttonCallback(const raspimouse_ros_2::ButtonValues::ConstPtr& msg)
 {
 	on = msg->mid_toggle;
@@ -50,11 +53,41 @@ void on_shutdown(int sig)
 	shutdown();
 }
 
+template<typename Num_type>
+bool Getdata(std::string filename,std::vector<std::vector<Num_type> >& data){
+	std::ifstream reading_file;
+	reading_file.open(filename,std::ios::in);
+	std::string reading_line_buffer;
+	std::cout << "reading " << filename << "..." << std::endl;
+	getline(reading_file,reading_line_buffer);
+	Num_type num;
+	char comma;
+
+	while(!reading_file.eof()){
+		std::vector<Num_type> temp_data;
+		getline(reading_file,reading_line_buffer);
+		std::istringstream is(reading_line_buffer);
+		while(!is.eof()){
+			is >> num >> comma;
+			temp_data.push_back(num);
+		}
+		data.push_back(temp_data);
+	}
+	return true;
+}
+
 void readEpisodes(string file)
 {
 	ep.reset();
 
 	rosbag::Bag bag1(file, rosbag::bagmode::Read);
+
+	file.erase(file.size()-4);
+	string predict_path = "/home/ubuntu/.ros/" + file + "_Predict" + ".txt";
+	string predict_proba_path = "/home/ubuntu/.ros/" + file + "_Predict_Proba" + ".txt";
+
+	Getdata(predict_path, predict);
+	Getdata(predict_proba_path, predict_proba);
 
 	vector<std::string> topics;
 	topics.push_back("/event");
