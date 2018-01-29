@@ -265,3 +265,7 @@ void ParticleFilter::motionUpdate(Episodes *ep)
 
 	}
 }
+
+void ParticleFilter::setPredict(vector<vector<double> > &p_prob){
+	predict_proba = p_prob;
+}

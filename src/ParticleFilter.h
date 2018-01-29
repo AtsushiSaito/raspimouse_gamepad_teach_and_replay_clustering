@@ -24,7 +24,9 @@ public:
 	Action modeParticle(Episodes *ep);
 	Action average(Episodes *ep);
 	void motionUpdate(Episodes *ep);
+	void setPredict(vector<vector<double> > &p_prob);
 private:
+	vector<vector<double> > predict_proba;
 	vector<Particle> particles;
 	ProbDistributions prob;
 

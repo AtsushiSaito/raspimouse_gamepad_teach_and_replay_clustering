@@ -86,8 +86,8 @@ void readEpisodes(string file)
 	string predict_path = "/home/ubuntu/.ros/" + file + "_Predict" + ".txt";
 	string predict_proba_path = "/home/ubuntu/.ros/" + file + "_Predict_Proba" + ".txt";
 
-	Getdata(predict_path, predict);
 	Getdata(predict_proba_path, predict_proba);
+	pf.setPredict(predict_proba);
 
 	vector<std::string> topics;
 	topics.push_back("/event");
