@@ -96,7 +96,7 @@ class Clustering():
 
     def resultWrite(self):
         predict_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
-        predict_proba_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + 'Predict_Proba' + '.txt'
+        predict_proba_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
         np.savetxt(predict_path, self.predict, delimiter=',')
         np.savetxt(predict_proba_path, self.predict_proba, delimiter=',')
 
