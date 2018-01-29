@@ -30,7 +30,6 @@ int sum_forward = 0;
 bool on = false;
 bool bag_read = false;
 
-vector<int> predict;
 vector<vector<double> > predict_proba;
 
 void buttonCallback(const raspimouse_ros_2::ButtonValues::ConstPtr& msg)
