@@ -66,8 +66,7 @@ class Clustering():
         return True
 
     def openBagfile(self):
-        #self.bagfile_path = rospy.get_param("/bag_filelink", rospy.get_param("/current_bag_file",""))
-        self.bagfile_path = "/home/ubuntu/.ros/2017-12-13_21-04-23.bag"
+        self.bagfile_path = rospy.get_param("/bag_filelink", rospy.get_param("/current_bag_file",""))
         self.bag = rosbag.Bag(self.bagfile_path)
         self.bagname, self.bagpath = os.path.splitext(self.bagfile_path)
         print ("----------------------")
