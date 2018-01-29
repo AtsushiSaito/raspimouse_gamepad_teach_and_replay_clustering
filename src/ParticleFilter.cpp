@@ -147,25 +147,6 @@ double ParticleFilter::likelihood(Observation *past, Observation *last)
 				past->log_ls - last->log_ls,
 				past->log_rs - last->log_rs,
 				past->log_rf - last->log_rf };
-	/*
-	double diff[4] = {	past->lf - last->lf,
-				past->ls - last->ls,
-				past->rs - last->rs,
-				past->rf - last->rf };
-	//cout << diff[1] << '\t' << diff[2] << endl;
-	double diff[4] = {
-		(past->lf + past->rf) - (last->lf + last->rf), ((past->lf + past->rf) + (last->lf + last->rf)),
-		(past->ls + past->rs) - (last->ls + last->rs), ((past->ls + past->rs) + (last->ls + last->rs)) };
-				*/
-
-	/*
-	double ans = 1.0;
-	double sigma = 300;
-	double coef = 1.0 / (sqrt(2*sigma*sigma));
-	for(double &d : diff){
-		ans *= coef * exp( -(d*d) / (2*sigma*sigma));
-	}
-	*/
 	double ans = 1.0;
 	for(double &d : diff){
 		ans /= (1 + fabs(d));
