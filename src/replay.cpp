@@ -113,6 +113,7 @@ int main(int argc, char **argv)
 		}else if(not bag_read){
 			string bagfile;
 			n.getParam("/current_bag_file", bagfile);
+			n.param("/bag_filelink", bagfile, bagfile);
 			readEpisodes(bagfile);
 			bag_read = true;
 			pf.init();
