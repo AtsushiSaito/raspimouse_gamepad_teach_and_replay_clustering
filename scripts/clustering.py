@@ -97,7 +97,7 @@ class Clustering():
         predict_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
         predict_proba_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
         np.savetxt(predict_path, self.predict, delimiter=',')
-        np.savetxt(predict_proba_path, self.predict_proba, delimiter=',')
+        np.savetxt(predict_proba_path, self.predict_proba, delimiter=',', fmt="%.8f")
 
     def fit(self):
         if self.checkBagopen():
