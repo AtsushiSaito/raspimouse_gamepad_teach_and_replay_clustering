@@ -64,7 +64,7 @@ void readEpisodes(string file)
 	double start = view.getBeginTime().toSec() + 5.0; //discard first 5 sec
 	double end = view.getEndTime().toSec() - 5.0; //discard last 5 sec
 	for(auto i : view){
-	        auto s = i.instantiate<raspimouse_gamepad_teach_and_replay_clustering::Event>();
+		auto s = i.instantiate<raspimouse_gamepad_teach_and_replay_clustering::Event>();
 
 		Observation obs(s->left_forward,s->left_side,s->right_side,s->right_forward);
 		Action a = {s->linear_x,s->angular_z};
