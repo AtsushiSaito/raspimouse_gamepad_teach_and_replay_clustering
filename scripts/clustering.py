@@ -114,6 +114,12 @@ class Clustering():
             self.predict = VBGMM.predict(self.data)
             self.predict_proba = VBGMM.predict_proba(self.data)
 
+            np.set_printoptions(precision=6, suppress=True)
+
+            ##Debug
+            #for i in range(len(self.sensor_values)):
+            #    print (self.predict_proba[i], self.sensor_values[i])
+
             OD = outlier_detection(offset = 5,repeat=2)
             self.od_predict = OD.fit(self.predict)
 
