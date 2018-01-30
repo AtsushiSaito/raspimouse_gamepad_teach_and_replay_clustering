@@ -40,8 +40,6 @@ void Episodes::print(string filename)
 		ofs.open(filename);
 		io = &ofs;
 	}
-		
-		
 	for(auto e : data){
 		*io << e.str() << endl;
 	}
