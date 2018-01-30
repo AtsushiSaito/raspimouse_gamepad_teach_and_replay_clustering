@@ -86,7 +86,6 @@ void readEpisodes(string file)
 	string predict_proba_path = "/home/ubuntu/.ros/" + file + "_Predict_Proba" + ".txt";
 
 	Getdata(predict_proba_path, predict_proba);
-	pf.setPredict(predict_proba);
 
 	vector<std::string> topics;
 	topics.push_back("/event");
@@ -103,14 +102,17 @@ void readEpisodes(string file)
 		Event e(obs,a,0.0);
 		e.time = i.getTime();
 
-		if(e.time.toSec() < start)
+		if(e.time.toSec() < start){
+			predict_proba.erase(predict_proba.begin());
 			continue;
+		}
 
 		ep.append(e);
 
 		if(e.time.toSec() > end)
 			break;
 	}
+	pf.setPredict(predict_proba);
 }
 
 int main(int argc, char **argv)
