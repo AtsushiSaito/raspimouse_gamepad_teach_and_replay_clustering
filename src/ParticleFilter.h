@@ -25,12 +25,9 @@ public:
 	Action average(Episodes *ep);
 	void motionUpdate(Episodes *ep);
 	void setPredict(vector<vector<double> > &p_prob);
-	void clusterLocalization(int event_id);
 private:
 	int mode_event_id;
-	int n_components = 10;
 	vector<vector<double> > predict_proba;
-	vector<double> localization_prob;
 	vector<Particle> particles;
 	ProbDistributions prob;
 

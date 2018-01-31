@@ -23,11 +23,6 @@ void ParticleFilter::init(void)
 		p.pos = prob.uniformRandInt(0,episodes->data.size()-2);
 		p.weight = w;
 	}
-	double lw = 1.0/n_components;
-	localization_prob.clear();
-	for(int i=0; i<n_components; i++){
-		localization_prob.push_back(lw);
-	}
 }
 
 void ParticleFilter::print(void)
@@ -85,8 +80,6 @@ Action ParticleFilter::mode(Episodes *ep)
 		}
 		e->counter = 0;
 	}
-	cout << "EventID: " << mode_event_id << endl;
-	clusterLocalization(mode_event_id);
 	Action a;
 	a.linear_x = mode_a->linear_x;
 	a.angular_z = mode_a->angular_z;
@@ -116,11 +109,8 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 	for(auto &p : particles){
 		double h = likelihood(episodes->obsAt(p.pos),obs);
 		//double h = likelihood(episodes->obsAt(p.pos),obs, episodes->actionAt(p.pos), act);
-		double w = 0.0;
-		for(int i=0;i<n_components;i++){
-			w += predict_proba.at(p.pos).at(i) * predict_proba.at(mode_event_id).at(i);
-		}
-		p.weight *= h * w;
+
+		p.weight *= h;
 		out->eta += p.weight;
 	}
 /*
@@ -260,19 +250,4 @@ void ParticleFilter::motionUpdate(Episodes *ep)
 
 void ParticleFilter::setPredict(vector<vector<double> > &p_prob){
 	predict_proba = p_prob;
-}
-
-void ParticleFilter::clusterLocalization(int event_id){
-	double w = 0;
-	for(int i=0;i<n_components;i++){
-		localization_prob.at(i) *= predict_proba.at(event_id).at(i);
-		w += localization_prob.at(i);
-	}
-	for(int i=0;i<n_components;i++){
-		localization_prob.at(i) /= w;
-	}
-	for(auto s : localization_prob){
-		//cout << s << ",";
-	}
-	//cout << endl;
 }
