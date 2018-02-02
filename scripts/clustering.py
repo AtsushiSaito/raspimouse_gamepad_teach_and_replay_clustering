@@ -96,7 +96,7 @@ class Clustering():
     def resultWrite(self):
         predict_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
         predict_proba_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
-        np.savetxt(predict_path, self.predict, delimiter=',')
+        np.savetxt(predict_path, self.od_predict, delimiter=',')
         np.savetxt(predict_proba_path, self.predict_proba, delimiter=',', fmt="%.8f", header=predict_proba_path)
 
     def fit(self):
@@ -107,7 +107,8 @@ class Clustering():
             self.action_values = np.c_[self.linear_x, self.angular_z]
             self.sensor_values = np.c_[self.left_forward, self.left_side, self.right_side, self.right_forward]
 
-            self.data = self.preprocessingValue(self.sensor_values)
+            #self.data = self.preprocessingValue(self.sensor_values)
+            self.data = self.sensor_values
 
             rospy.loginfo("Clustering Start")
             VBGMM = mixture.BayesianGaussianMixture(n_components=10,max_iter=200,random_state=10).fit(self.data)
@@ -120,7 +121,7 @@ class Clustering():
             #for i in range(len(self.sensor_values)):
             #    print (self.predict_proba[i], self.sensor_values[i])
 
-            OD = outlier_detection(offset = 5,repeat=2)
+            OD = outlier_detection(offset = 5,repeat=5)
             self.od_predict = OD.fit(self.predict)
 
             self.resultWrite()
