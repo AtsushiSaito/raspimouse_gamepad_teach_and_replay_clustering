@@ -81,9 +81,11 @@ void readEpisodes(string file)
 
 	rosbag::Bag bag1(file, rosbag::bagmode::Read);
 
+	string home_path = std::getenv("HOME");
+
 	file.erase(file.size()-4);
-	string predict_path = "/home/ubuntu/.ros/" + file + "_Predict" + ".txt";
-	string predict_proba_path = "/home/ubuntu/.ros/" + file + "_Predict_Proba" + ".txt";
+	string predict_path = home_path + "/.ros/" + file + "_Predict" + ".txt";
+	string predict_proba_path = home_path + "/.ros/" + file + "_Predict_Proba" + ".txt";
 
 	Getdata(predict_proba_path, predict_proba);
 
