@@ -94,8 +94,9 @@ class Clustering():
         return SSData
 
     def resultWrite(self):
-        predict_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
-        predict_proba_path = "/home/ubuntu/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
+        home_path = os.environ['HOME']
+        predict_path = home_path + "/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
+        predict_proba_path = home_path + "/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
         np.savetxt(predict_path, self.od_predict, delimiter=',')
         np.savetxt(predict_proba_path, self.predict_proba, delimiter=',', fmt="%.8f", header=predict_proba_path)
 
