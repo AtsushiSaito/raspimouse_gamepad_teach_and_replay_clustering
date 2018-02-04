@@ -98,12 +98,13 @@ class Clustering():
         predict_path = home_path + "/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
         predict_proba_path = home_path + "/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
         print (len(self.od_predict), len(self.group_list), len(self.group_time_list),len(self.group_time_length), len(self.group_time_range_fast), len(self.group_time_range_last))
-        predict_data = np.c_[self.od_predict, self.group_list, self.group_time_list, self.group_time_length, self.group_time_range_fast, self.group_time_range_last]
+        predict_data = np.c_[self.id, self.od_predict, self.group_list, self.group_time_list, self.group_time_length, self.group_time_range_fast, self.group_time_range_last]
 
         np.savetxt(predict_path, predict_data, delimiter=',', fmt="%d", header=predict_path)
         np.savetxt(predict_proba_path, self.predict_proba, delimiter=',', fmt="%.8f", header=predict_proba_path)
 
     def devidGroup(self, label_list):
+        self.id = []
         self.group_list = []
         self.group_time_list = []
         self.group_time_length = []
@@ -113,6 +114,7 @@ class Clustering():
         group_range_fast = 0
         group_range_last = 0
 
+        event_id = 0
         group_num = 0
         group_time = 0
 
@@ -134,8 +136,10 @@ class Clustering():
 
             self.group_list.append(group_num)
             self.group_time_list.append(group_time)
+            self.id.append(event_id)
 
             group_time += 1
+            event_id += 1
             label_recent = label_list[i]
 
         for q in range(group_time):
