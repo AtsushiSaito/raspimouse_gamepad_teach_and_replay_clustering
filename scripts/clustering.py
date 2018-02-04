@@ -97,22 +97,51 @@ class Clustering():
         home_path = os.environ['HOME']
         predict_path = home_path + "/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict' + '.txt'
         predict_proba_path = home_path + "/.ros" + '/' + string.replace(self.bagname, '/', '_slash_') + '_Predict_Proba' + '.txt'
-        np.savetxt(predict_path, self.od_predict, delimiter=',')
+        print (len(self.od_predict), len(self.group_list), len(self.group_time_list),len(self.group_time_length), len(self.group_time_range_fast), len(self.group_time_range_last))
+        predict_data = np.c_[self.od_predict, self.group_list, self.group_time_list, self.group_time_length, self.group_time_range_fast, self.group_time_range_last]
+
+        np.savetxt(predict_path, predict_data, delimiter=',', fmt="%d", header=predict_path)
         np.savetxt(predict_proba_path, self.predict_proba, delimiter=',', fmt="%.8f", header=predict_proba_path)
 
     def devidGroup(self, label_list):
-        group_list = []
+        self.group_list = []
+        self.group_time_list = []
+        self.group_time_length = []
+        self.group_time_range_fast = []
+        self.group_time_range_last = []
+
+        group_range_fast = 0
+        group_range_last = 0
+
         group_num = 0
+        group_time = 0
+
         label_recent = label_list[0]
 
         for i in range(len(label_list)):
-            if(label_recent==label_list[i]):
-                group_list.append(group_num)
-            else:
-                group_num += 1
+            if(label_recent != label_list[i]):
 
+                group_range_fast += group_range_last
+                group_range_last += group_time
+
+                for q in range(group_time):
+                    self.group_time_length.append(group_time)
+                    self.group_time_range_fast.append(group_range_fast)
+                    self.group_time_range_last.append(group_range_last)
+
+                group_num += 1
+                group_time = 0
+
+            self.group_list.append(group_num)
+            self.group_time_list.append(group_time)
+
+            group_time += 1
             label_recent = label_list[i]
-        return group_list
+
+        for q in range(group_time):
+            self.group_time_length.append(group_time)
+            self.group_time_range_fast.append(group_range_fast)
+            self.group_time_range_last.append(group_range_last)
 
     def fit(self):
         if self.checkBagopen():
@@ -139,7 +168,7 @@ class Clustering():
             OD = outlier_detection(offset = 5,repeat=5)
             self.od_predict = OD.fit(self.predict)
 
-            self.od_group = self.devidGroup(self.od_predict)
+            self.devidGroup(self.od_predict)
 
             self.resultWrite()
 
