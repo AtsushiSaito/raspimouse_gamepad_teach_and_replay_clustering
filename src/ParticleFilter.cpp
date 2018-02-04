@@ -80,6 +80,15 @@ Action ParticleFilter::mode(Episodes *ep)
 		}
 		e->counter = 0;
 	}
+	cout << "EventID: " << mode_event_id
+	<< " ID: " << predict.at(mode_event_id).at(0)
+	<< " label: " << predict.at(mode_event_id).at(1)
+	<< " group: " << predict.at(mode_event_id).at(2)
+	<< " time: " << predict.at(mode_event_id).at(3)
+	<< " len: " << predict.at(mode_event_id).at(4)
+	<< " fast: " << predict.at(mode_event_id).at(5)
+	<< " last: " << predict.at(mode_event_id).at(6) << endl;
+
 	Action a;
 	a.linear_x = mode_a->linear_x;
 	a.angular_z = mode_a->angular_z;
@@ -248,6 +257,7 @@ void ParticleFilter::motionUpdate(Episodes *ep)
 	}
 }
 
-void ParticleFilter::setPredict(vector<vector<double> > &p_prob){
+void ParticleFilter::setClustering(vector<vector<double> > &p_prob, vector<vector<int> > &p){
 	predict_proba = p_prob;
+	predict = p;
 }

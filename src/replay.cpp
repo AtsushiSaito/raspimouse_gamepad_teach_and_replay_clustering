@@ -31,6 +31,7 @@ bool on = false;
 bool bag_read = false;
 
 vector<vector<double> > predict_proba;
+vector<vector<int> > predict;
 
 void buttonCallback(const raspimouse_ros_2::ButtonValues::ConstPtr& msg)
 {
@@ -88,6 +89,7 @@ void readEpisodes(string file)
 	string predict_proba_path = home_path + "/.ros/" + file + "_Predict_Proba" + ".txt";
 
 	Getdata(predict_proba_path, predict_proba);
+	Getdata(predict_path, predict);
 
 	vector<std::string> topics;
 	topics.push_back("/event");
@@ -105,6 +107,7 @@ void readEpisodes(string file)
 		e.time = i.getTime();
 
 		if(e.time.toSec() < start){
+			predict.erase(predict.begin());
 			predict_proba.erase(predict_proba.begin());
 			continue;
 		}
@@ -114,7 +117,7 @@ void readEpisodes(string file)
 		if(e.time.toSec() > end)
 			break;
 	}
-	pf.setPredict(predict_proba);
+	pf.setClustering(predict_proba, predict);
 }
 
 int main(int argc, char **argv)
