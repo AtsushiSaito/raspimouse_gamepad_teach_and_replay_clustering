@@ -121,7 +121,7 @@ class Clustering():
         for i in range(len(label_list)):
             if(label_recent != label_list[i]):
 
-                group_range_fast += group_range_last
+                group_range_fast = group_range_last
                 group_range_last += group_time
 
                 for q in range(group_time):
