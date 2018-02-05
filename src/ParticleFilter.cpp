@@ -118,14 +118,15 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 
 	int e_predict = predict.at(mode_event_id).at(2);
 	int e_len = predict.at(mode_event_id).at(4);
+	int ep_max = episodes->data.size();
 
-	cout << "BACK::" << predict.at(predict.size() - 2).at(2) << endl;
+	cout << "predict_time: " << predict_time << endl;
 	if(e_predict == recent_predict){
 		if(predict_time > e_len){
 			predict_time = 0;
 			e_predict += 1;
-			if(e_predict > predict.at(predict.size() - 2).at(2))
-				e_predict = 0;
+			if(e_predict > predict.at(ep_max - 2).at(2))
+				e_predict = 1;
 		}else{
 			predict_time++;
 		}
