@@ -115,10 +115,36 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 {
 	out->eta = 0.0;
 	cout << "obs likelihood" << endl;
+
+	int e_predict = predict.at(mode_event_id).at(2);
+	int e_len = predict.at(mode_event_id).at(4);
+
+	cout << "BACK::" << predict.at(predict.size() - 2).at(2) << endl;
+	if(e_predict == recent_predict){
+		if(predict_time > e_len){
+			predict_time = 0;
+			e_predict += 1;
+			if(e_predict > predict.at(predict.size() - 2).at(2))
+				e_predict = 0;
+		}else{
+			predict_time++;
+		}
+	}else{
+		predict_time = 0;
+	}
+	recent_predict = e_predict;
+
 	for(auto &p : particles){
 		double h = likelihood(episodes->obsAt(p.pos),obs);
 		//double h = likelihood(episodes->obsAt(p.pos),obs, episodes->actionAt(p.pos), act);
 
+		int p_predict = predict.at(episodes->At(p.pos)->event_id).at(2);
+
+		if(p_predict == e_predict){
+			h *= 2;
+		}else if(p_predict == (e_predict + 1)){
+			h *= 1.5;
+		}
 		p.weight *= h;
 		out->eta += p.weight;
 	}

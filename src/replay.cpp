@@ -88,6 +88,8 @@ void readEpisodes(string file)
 	string predict_path = home_path + "/.ros/" + file + "_Predict" + ".txt";
 	string predict_proba_path = home_path + "/.ros/" + file + "_Predict_Proba" + ".txt";
 
+	predict_proba.clear();
+	predict.clear();
 	Getdata(predict_proba_path, predict_proba);
 	Getdata(predict_path, predict);
 
