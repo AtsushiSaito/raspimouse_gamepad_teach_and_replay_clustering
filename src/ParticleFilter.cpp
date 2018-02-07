@@ -125,7 +125,7 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 		if(predict_time >= e_len){
 			predict_time = 0;
 			e_predict += 1;
-			if(e_predict > predict.at(ep_max - 2).at(2))
+			if(e_predict > predict.at(ep_max - 2).at(2) - 1)
 				e_predict = 1;
 		}else{
 			predict_time++;
@@ -141,13 +141,16 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 
 		int p_predict = predict.at(episodes->At(p.pos)->event_id).at(2);
 
-		if(p_predict == e_predict)
-			h *= 0.5;
-		else if(p_predict == e_predict + 1)
-			h *= 0.3;
-		else
-			h *= 0.2;
+		bool mode = false;
 
+		if(not mode){
+			if(p_predict == e_predict)
+				h *= 0.5;
+			else if(p_predict == e_predict + 1)
+				h *= 0.3;
+			else
+				h *= 0.2;
+		}
 		p.weight *= h;
 		out->eta += p.weight;
 	}
