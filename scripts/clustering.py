@@ -159,7 +159,7 @@ class Clustering():
             self.data = self.sensor_values
 
             rospy.loginfo("Clustering Start")
-            VBGMM = mixture.BayesianGaussianMixture(n_components=10,max_iter=200,random_state=10).fit(self.data)
+            VBGMM = mixture.BayesianGaussianMixture(n_components=10,max_iter=300,random_state=10).fit(self.data)
             self.predict = VBGMM.predict(self.data)
             self.predict_proba = VBGMM.predict_proba(self.data)
 
