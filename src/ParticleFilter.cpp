@@ -12,7 +12,6 @@ ParticleFilter::ParticleFilter(int num, Episodes *ep)
 	for(int i=0;i<num;i++){
 		particles.push_back(p);
 	}
-
 	episodes = ep;
 }
 
@@ -23,6 +22,8 @@ void ParticleFilter::init(void)
 		p.pos = prob.uniformRandInt(0,episodes->data.size()-2);
 		p.weight = w;
 	}
+	end_mode = false;
+	end_time = 0;
 }
 
 void ParticleFilter::print(void)
@@ -120,20 +121,30 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 	int e_len = predict.at(mode_event_id).at(4);
 	int ep_max = episodes->data.size();
 
-	cout << "predict_time: " << predict_time << endl;
-	if(e_predict == recent_predict){
-		if(predict_time >= e_len){
-			predict_time = 0;
-			e_predict += 1;
-			if(e_predict > predict.at(ep_max - 2).at(2) - 1)
-				e_predict = 1;
+	if(not end_mode){
+		cout << "predict_time: " << predict_time << endl;
+		if(e_predict == recent_predict){
+			if(predict_time >= e_len){
+				e_predict++;
+				if(e_predict > predict.at(ep_max - 1).at(2) - 1){
+					end_mode = true;
+					end_time = 0;
+				}
+			}else{
+				predict_time++;
+			}
 		}else{
-			predict_time++;
+			predict_time = 0;
 		}
-	}else{
-		predict_time = 0;
+		recent_predict = e_predict;
+	}else if(end_mode){
+		if(end_time > 10){
+			end_mode = false;
+			end_time = 0;
+		}else{
+			end_time++;
+		}
 	}
-	recent_predict = e_predict;
 
 	for(auto &p : particles){
 		double h = likelihood(episodes->obsAt(p.pos),obs);
@@ -143,7 +154,7 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 
 		bool mode = false;
 
-		if(not mode){
+		if(not mode && not end_mode){
 			if(p_predict == e_predict)
 				h *= 0.5;
 			else if(p_predict == e_predict + 1)
