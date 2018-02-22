@@ -22,7 +22,7 @@ void ParticleFilter::init(void)
 		p.pos = prob.uniformRandInt(0,episodes->data.size()-2);
 		p.weight = w;
 	}
-	end_mode = false;
+	normal_mode = true;
 	end_time = 0;
 }
 
@@ -121,13 +121,15 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 	int e_len = predict.at(mode_event_id).at(4);
 	int ep_max = episodes->data.size();
 
-	if(not end_mode){
+	if(not normal_mode){
 		cout << "predict_time: " << predict_time << endl;
 		if(e_predict == recent_predict){
 			if(predict_time >= e_len){
+				predict_time = 0;
 				e_predict++;
-				if(e_predict > predict.at(ep_max - 1).at(2) - 1){
-					end_mode = true;
+				if(e_predict > predict.at(ep_max - 1).at(2)){
+					normal_mode = true;
+					predict_time = 0;
 					end_time = 0;
 				}
 			}else{
@@ -137,9 +139,9 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 			predict_time = 0;
 		}
 		recent_predict = e_predict;
-	}else if(end_mode){
+	}else if(normal_mode){
 		if(end_time > 10){
-			end_mode = false;
+			normal_mode = false;
 			end_time = 0;
 		}else{
 			end_time++;
@@ -152,15 +154,15 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 
 		int p_predict = predict.at(episodes->At(p.pos)->event_id).at(2);
 
-		bool mode = false;
+		//normal_mode = true;
 
-		if(not mode && not end_mode){
+		if(not normal_mode){
 			if(p_predict == e_predict)
-				h *= 0.5;
+				h *= 2.0;
 			else if(p_predict == e_predict + 1)
-				h *= 0.3;
+				h *= 1.5;
 			else
-				h *= 0.2;
+				h *= 1.0;
 		}
 		p.weight *= h;
 		out->eta += p.weight;

@@ -27,7 +27,7 @@ public:
 	void setClustering(vector<vector<double> > &p_prob, vector<vector<int> > &p);
 private:
 	int mode_event_id, predict_time, recent_predict, end_time;
-	bool end_mode;
+	bool normal_mode;
 	vector<vector<double> > predict_proba;
 	vector<vector<int> > predict;
 	vector<Particle> particles;
