@@ -6,3 +6,9 @@ float32 linear_x
 float32 angular_z
 float32 eta
 uint32[] particles_pos
+int16 event_id
+int16 mode
+int16 predict_time
+int16 group
+int16 end_time
+int16 ep_max

@@ -40,6 +40,11 @@ void ParticleFilter::print(void)
 	}
 }
 
+vector<int> ParticleFilter::getResult(){
+	vector<int> a = {e_predict, e_len, ep_max, mode_event_id, predict_time, recent_predict, end_time, normal_mode};
+	return a;
+}
+
 Action ParticleFilter::modeParticle(Episodes *ep)
 {
 	double fw = 0.0;
@@ -117,9 +122,9 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 	out->eta = 0.0;
 	cout << "obs likelihood" << endl;
 
-	int e_predict = predict.at(mode_event_id).at(2);
-	int e_len = predict.at(mode_event_id).at(4);
-	int ep_max = episodes->data.size();
+	e_predict = predict.at(mode_event_id).at(2);
+	e_len = predict.at(mode_event_id).at(4);
+	ep_max = episodes->data.size();
 
 	if(not normal_mode){
 		cout << "predict_time: " << predict_time << endl;
@@ -147,14 +152,14 @@ Action ParticleFilter::sensorUpdate(Observation *obs, Action *act, Episodes *ep,
 			end_time++;
 		}
 	}
-
+	cout << "normal_mode: " << normal_mode << endl;
 	for(auto &p : particles){
 		double h = likelihood(episodes->obsAt(p.pos),obs);
 		//double h = likelihood(episodes->obsAt(p.pos),obs, episodes->actionAt(p.pos), act);
 
 		int p_predict = predict.at(episodes->At(p.pos)->event_id).at(2);
 
-		//normal_mode = true;
+		normal_mode = true;
 
 		if(not normal_mode){
 			if(p_predict == e_predict)

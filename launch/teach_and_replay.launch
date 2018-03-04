@@ -1,5 +1,11 @@
 <launch>
 	<include file="$(find raspimouse_ros_2)/launch/raspimouse.launch" />
+	<!--<param name="bag_filelink" value="20180206_150405.bag" />-->
+	<!--<param name="bag_filelink" value="20180209_201204.bag" />-->
+	<param name="bag_filelink" value="20180214_195823.bag" /><!--論文用-->
+	<!--<param name="bag_filelink" value="20180225_205740.bag" />-->
+
+	<include file="$(find pfoe_web_debugger)/launch/pfoe_web_debugger.launch" />
 	<node pkg="joy" name="joy_node" type="joy_node" required="true">
 		<param name="autorepeat_rate" value="3" />
 	</node>

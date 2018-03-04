@@ -9,6 +9,7 @@
 #include <rosbag/view.h>
 #include <ros/package.h>
 #include "std_srvs/Trigger.h"
+#include "raspimouse_ros_2/LedValues.h"
 #include "geometry_msgs/Twist.h"
 #include "raspimouse_ros_2/LightSensorValues.h"
 #include "raspimouse_ros_2/TimedMotion.h"
@@ -130,6 +131,7 @@ int main(int argc, char **argv)
 
 	Subscriber sub = n.subscribe("lightsensors", 1, sensorCallback);
 	Subscriber sub_b = n.subscribe("buttons", 1, buttonCallback);
+	Publisher leds = n.advertise<raspimouse_ros_2::LedValues>("leds", 1);
 	Publisher cmdvel = n.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 	Publisher pfoe_out = n.advertise<raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput>("pfoe_out", 100);
 	ros::ServiceClient motor_on = n.serviceClient<std_srvs::Trigger>("motor_on");
@@ -147,6 +149,7 @@ int main(int argc, char **argv)
 	pf.init();
 	Rate loop_rate(10);
 	Action act = {0.0,0.0};
+	int recent_e;
 	while(ok()){
 		if(not on){
 			cout << "idle" << endl;
@@ -173,8 +176,21 @@ int main(int argc, char **argv)
 			continue;
 		}
 		raspimouse_gamepad_teach_and_replay_clustering::PFoEOutput out;
+		raspimouse_ros_2::LedValues led_msg;
 
 		act = pf.sensorUpdate(&sensor_values, &act, &ep, &out);
+		vector<int> a = pf.getResult();
+
+		if(predict.at(a.at(3)).at(2) != recent_e){
+			cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+			led_msg.right_side = true;
+		}else{
+			led_msg.right_side = false;
+		}
+		recent_e = predict.at(a.at(3)).at(2);
+		//cout << "a[0]:" << a.at(0) << endl;
+
+		leds.publish(led_msg);
 		msg.linear.x = act.linear_x;
 		out.linear_x = act.linear_x;
 		msg.angular.z = act.angular_z;
@@ -184,6 +200,12 @@ int main(int argc, char **argv)
 		out.left_side = sensor_values.ls;
 		out.right_forward = sensor_values.rf;
 		out.right_side = sensor_values.rs;
+		out.event_id = a.at(3);
+		out.mode = a.at(7);
+		out.predict_time = a.at(4);
+		out.group = recent_e;
+		out.end_time = a.at(6);
+		out.ep_max = a.at(2);
 
 		cmdvel.publish(msg);
 		pfoe_out.publish(out);

@@ -23,9 +23,11 @@ public:
 	Action mode(Episodes *ep);
 	Action modeParticle(Episodes *ep);
 	Action average(Episodes *ep);
+	vector<int> getResult();
 	void motionUpdate(Episodes *ep);
 	void setClustering(vector<vector<double> > &p_prob, vector<vector<int> > &p);
 private:
+	int e_predict, e_len, ep_max;
 	int mode_event_id, predict_time, recent_predict, end_time;
 	bool normal_mode;
 	vector<vector<double> > predict_proba;
