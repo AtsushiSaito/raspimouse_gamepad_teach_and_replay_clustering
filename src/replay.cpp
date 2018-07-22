@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 	int recent_e;
 	while(ok()){
 		if(not on){
-			cout << "idle" << endl;
+			cout << "idle (Clustering)" << endl;
 			bag_read = false;
 			spinOnce();
 			loop_rate.sleep();
