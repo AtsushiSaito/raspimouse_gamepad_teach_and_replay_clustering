@@ -128,11 +128,11 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/raspimouse_gamepad_teach_and_replay_clustering.cpp
 # )
-add_library(Observation src/Observation.cpp)
-add_library(Event src/Event.cpp)
-add_library(ParticleFilter src/ParticleFilter.cpp)
-add_library(Episodes src/Episodes.cpp)
-add_library(Particle src/Particle.cpp)
+add_library(${PROJECT_NAME}_Observation src/Observation.cpp)
+add_library(${PROJECT_NAME}_Event src/Event.cpp)
+add_library(${PROJECT_NAME}_ParticleFilter src/ParticleFilter.cpp)
+add_library(${PROJECT_NAME}_Episodes src/Episodes.cpp)
+add_library(${PROJECT_NAME}_Particle src/Particle.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -143,7 +143,7 @@ add_library(Particle src/Particle.cpp)
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/raspimouse_gamepad_teach_and_replay_clustering_node.cpp)
-add_executable(replay src/replay.cpp)
+add_executable(${PROJECT_NAME}_replay src/replay.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,19 +154,19 @@ add_executable(replay src/replay.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(replay ${TARGET_NAME} ${PROJECT_NAME}_generate_messages_cpp)
-add_dependencies(ParticleFilter ${TARGET_NAME} ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(${PROJECT_NAME}_replay ${TARGET_NAME} ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(${PROJECT_NAME}_ParticleFilter ${TARGET_NAME} ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(replay ${catkin_LIBRARIES})
-target_link_libraries(replay Observation ${catkin_LIBRARIES})
-target_link_libraries(replay Event ${catkin_LIBRARIES})
-target_link_libraries(replay Episodes ${catkin_LIBRARIES})
-target_link_libraries(replay ParticleFilter ${catkin_LIBRARIES})
-target_link_libraries(replay Particle ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_replay ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_replay ${PROJECT_NAME}_Observation ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_replay ${PROJECT_NAME}_Event ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_replay ${PROJECT_NAME}_Episodes ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_replay ${PROJECT_NAME}_ParticleFilter ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_replay ${PROJECT_NAME}_Particle ${catkin_LIBRARIES})
 
 #############
 ## Install ##
